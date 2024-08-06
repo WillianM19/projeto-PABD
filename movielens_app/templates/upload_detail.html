@@ -1,6 +1,32 @@
-<h1>Detalhes do Upload</h1>
-<p>Nome do Arquivo: {{ upload.file_name }}</p>
-<p>Data de Upload: {{ upload.upload_date }}</p>
-<p>Tempo de Processamento: {{ upload.processing_time }}</p>
-<p>Registros Inseridos: {{ upload.records_inserted }}</p>
-<p>Registros com Falha: {{ upload.records_failed }}</p>
+{% extends 'base.html' %}
+
+{% block title %}Enviar arquivos{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-3xl font-semibold text-green-600 mb-4">Detalhes do Upload</h1>
+        <div class="space-y-4">
+            <div class="flex items-center">
+                <span class="font-medium text-gray-700 w-48">Nome do Arquivo:</span>
+                <span class="text-gray-900">{{ upload.file_name }}</span>
+            </div>
+            <div class="flex items-center">
+                <span class="font-medium text-gray-700 w-48">Data de Upload:</span>
+                <span class="text-gray-900">{{ upload.upload_date }}</span>
+            </div>
+            <div class="flex items-center">
+                <span class="font-medium text-gray-700 w-48">Tempo de Processamento:</span>
+                <span class="text-gray-900">{{ upload.processing_time }}</span>
+            </div>
+            <div class="flex items-center">
+                <span class="font-medium text-gray-700 w-48">Registros Inseridos:</span>
+                <span class="text-gray-900">{{ upload.records_inserted }}</span>
+            </div>
+            <div class="flex items-center">
+                <span class="font-medium text-gray-700 w-48">Registros com Falha:</span>
+                <span class="text-gray-900">{{ upload.records_failed }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+    

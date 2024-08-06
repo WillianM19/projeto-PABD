@@ -1,0 +1,36 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Minha Aplicação{% endblock %}</title>
+    <!-- Link para arquivos de estilo CSS -->
+    {% tailwind_preload_css %}
+    {% tailwind_css %}
+    <!-- Outros arquivos de estilo ou scripts podem ser adicionados aqui -->
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <!-- Adicione links para outras páginas aqui -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Conteúdo específico da página será inserido aqui -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Minha Aplicação. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Scripts JavaScript -->
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
