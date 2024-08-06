@@ -41,12 +41,14 @@ class UploadForm(forms.Form):
         processing_time_seconds = end_time - start_time
         processing_time = timedelta(seconds=processing_time_seconds)
 
-        FileUpload.objects.create(
+        file_upload = FileUpload.objects.create(
             file_name=file_name,
             processing_time=processing_time,
             records_inserted=records_inserted,
             records_failed=records_failed
         )
+        
+        return file_upload
 
     def _process_csv(self, data, model, columns):
         # Processar e salvar os dados no banco de dados

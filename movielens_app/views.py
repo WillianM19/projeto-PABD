@@ -1,5 +1,6 @@
 from django import forms
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 
@@ -13,8 +14,8 @@ class UploadView(FormView):
 
     def form_valid(self, form):
         try:
-            form.process_file() 
-            return super().form_valid(form)
+            file_uploaded = form.process_file() 
+            return redirect(f'/upload/{file_uploaded.id}/')
         except forms.ValidationError as e:
             form.add_error(None, e)  
             return self.form_invalid(form)

@@ -12,13 +12,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <!-- Adicione links para outras páginas aqui -->
-            </ul>
-        </nav>
-    </header>
+    {% include 'layout/header.html' %}
 
     <main>
         {% block content %}
