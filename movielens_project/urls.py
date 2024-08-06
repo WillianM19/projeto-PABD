@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from movielens_app.views import UploadView, FileUploadDetailView
 
 urlpatterns = [
+    path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls, name="admin"),
     path('upload/', UploadView.as_view(), name="upload"),
     path('upload/<int:pk>/', FileUploadDetailView.as_view(), name='upload_detail'),
