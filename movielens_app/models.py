@@ -3,7 +3,7 @@ from django.utils import timezone
 
 class Rating(models.Model):
     userId = models.IntegerField()
-    movieId = models.IntegerField()
+    movieId = models.ForeignKey('Movie', on_delete=models.CASCADE)
     rating = models.FloatField()
     timestamp = models.BigIntegerField()
 
@@ -12,7 +12,7 @@ class Rating(models.Model):
 
 class Tag(models.Model):
     userId = models.IntegerField()
-    movieId = models.IntegerField()
+    movieId = models.ForeignKey('Movie', on_delete=models.CASCADE)
     tag = models.CharField(max_length=255)
     timestamp = models.BigIntegerField()
 
@@ -20,7 +20,7 @@ class Tag(models.Model):
         return f'Usuário {self.userId} etiquetou Filme {self.movieId} com {self.tag}'
 
 class Movie(models.Model):
-    movieId = models.IntegerField()
+    movieId = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     genres = models.CharField(max_length=255)
 
@@ -36,7 +36,7 @@ class Link(models.Model):
         return f'{self.movieId.title} (IMDb: {self.imdbId}, TMDb: {self.tmdbId})'
 
 class GenomeScore(models.Model):
-    movieId = models.IntegerField()
+    movieId = models.ForeignKey(Movie, on_delete=models.CASCADE)
     tagId = models.IntegerField()
     relevance = models.FloatField()
 

@@ -1,0 +1,50 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Enviar arquivos{% endblock %}
+
+{% block content %}
+
+    <!-- Movie Container -->
+    
+    <div class="flex flex-col gap-y-5 w-full">
+        <div>
+            filtros
+        </div>
+        <!-- Movie Card -->
+        <div class="flex gap-x-4 h-[192px] border border-stone-400 rounded-lg overflow-hidden bg-white">
+            <img src="https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_FMjpg_UX1000_.jpg"
+            alt="Imagem do filme" class=" h-[192px]">
+            <div class="py-2 flex flex-col gap-4 content-center ">
+                <h2 class="font-bold text-lg">Título do filme</h2>
+                <p class="text-stone-400 text-sm">Gênero: obj </p>
+                <p class="text-stone-400 text-sm">Avaliação:</p>
+                <!-- Definir a abordagem das estrelas -->
+                {% include 'components/stars.html' with star_count=3 %}
+                <p class="text-stone-400 text-sm">Data: data</p>
+            </div>
+        </div>
+        <div class="flex gap-x-4 h-[192px] border border-stone-400 rounded-lg overflow-hidden">
+            <img src="https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_FMjpg_UX1000_.jpg"
+            alt="Imagem do filme" class=" h-[192px]">
+            <div class="py-2">
+                <h2 class="font-bold">Título do filme</h2>
+                <p class="text-stone-400">Gênero: obj </p>
+                <p class="text-stone-400">Avaliação</p>
+                <p class="text-stone-400">Data: data</p>
+            </div>
+        </div>
+        <div class="flex gap-x-4 h-[192px] border border-stone-400 rounded-lg overflow-hidden">
+            <img src="https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_FMjpg_UX1000_.jpg"
+            alt="Imagem do filme" class=" h-[192px]">
+            <div class="py-2">
+                <h2 class="font-bold">Título do filme</h2>
+                <p class="text-stone-400">Gênero: obj </p>
+                <p class="text-stone-400">Avaliação</p>
+                <p class="text-stone-400">Data: data</p>
+            </div>
+        </div>
+    </div>
+    
+    
+{% endblock %}

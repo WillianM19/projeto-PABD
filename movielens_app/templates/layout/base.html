@@ -1,4 +1,6 @@
+{% load static %}
 {% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,13 +21,18 @@
             font-family: "Inter", sans-serif;
             font-optical-sizing: auto;
             font-style: normal;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background: #fff;
         }
     </style>
 </head>
 <body>
     {% include 'layout/header.html' %}
 
-    <main class="w-full max-w-[1920px] m-auto">
+    <main class="w-full max-w-[1920px] m-auto px-[60px]">
         {% block content %}
         <!-- Conteúdo específico da página será inserido aqui -->
         {% endblock %}
