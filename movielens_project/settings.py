@@ -139,3 +139,23 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "127.0.0.1:8000",
 ]
+
+# Celery
+CELERY_BROKER_URL = 'redis://localhost:6378/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6378/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6378/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+        'KEY_PREFIX': 'django_orm'
+    }
+}

@@ -50,12 +50,14 @@ class GenomeTag(models.Model):
     def __str__(self):
         return self.tag
 
+from django.db import models
+
 class FileUpload(models.Model):
     file_name = models.CharField(max_length=255)
-    upload_date = models.DateTimeField(default=timezone.now)
-    processing_time = models.DurationField()
-    records_inserted = models.IntegerField()
-    records_failed = models.IntegerField()
+    file = models.FileField(upload_to='uploads/')
+    processing_time = models.DurationField(null=True, blank=True)  # Permitir valores nulos
+    records_inserted = models.IntegerField(null=True, blank=True)
+    records_failed = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.file_name

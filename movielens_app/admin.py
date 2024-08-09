@@ -39,6 +39,4 @@ class GenomeTagAdmin(admin.ModelAdmin):
 
 @admin.register(FileUpload)
 class FileUploadAdmin(admin.ModelAdmin):
-    list_display = ['file_name', 'upload_date', 'processing_time', 'records_inserted', 'records_failed']
-    search_fields = ['file_name']
-    list_per_page = 15  
+    list_display = ('file_name', 'processing_time', 'records_inserted', 'records_failed')

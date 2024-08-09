@@ -1,19 +1,38 @@
 import requests
 from django import forms
 from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
-from django_filters.views import FilterView
-from django.views.generic import DetailView
+from django.db.models import Avg
+from django.urls import reverse_lazy
+from django.core.paginator import Paginator
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormView
 
 from .forms import UploadForm
-from .models import Movie
+from .models import Movie, Rating
+from .tasks import hello_world_task
 from movielens_app.models import FileUpload
 
-class HomeView(FilterView):
+def teste(request):
+    hello_world_task.delay()
+    return redirect('upload')
+
+class HomeView(ListView):
     template_name = 'index.html'
     model = Movie
+    paginate_by = 15
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginated_movies = context['page_obj'].object_list
+
+        movie_ratings = (
+            Rating.objects.filter(movieId__in=paginated_movies)
+            .values('movieId')
+            .annotate(average_rating=Avg('rating'))
+        )
+
+        return context
+    
 class MovieDetailView(DetailView):
     model = Movie
     template_name = 'movies/movie-detail.html'
