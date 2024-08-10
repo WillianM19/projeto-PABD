@@ -3,30 +3,33 @@
 {% block title %}Enviar arquivos{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-semibold text-green-600 mb-4">Detalhes do Upload</h1>
-        <div class="space-y-4">
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Nome do Arquivo:</span>
-                <span class="text-gray-900">{{ upload.file_name }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Data de Upload:</span>
-                <span class="text-gray-900">{{ upload.upload_date }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Tempo de Processamento:</span>
-                <span class="text-gray-900">{{ upload.processing_time }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Registros Inseridos:</span>
-                <span class="text-gray-900">{{ upload.records_inserted }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Registros com Falha:</span>
-                <span class="text-gray-900">{{ upload.records_failed }}</span>
-            </div>
+    <div class="mt-[30px] border border-stone-400/50 rounded-lg p-[16px]">
+        <h2 class="text-[22px] font-medium">Detalhes do envio:</h2>
+        <div class="py-[24px] flex flex-col gap-[24px] text-stone-400 text-[18px]">
+            <p>
+                <strong class="text-black">Nome do Arquivo:</strong>
+                {{ upload.file_name }}
+            </p>
+            <p>
+                <strong class="text-black">Data de Upload:</strong>
+                {{ upload.upload_date }}
+            </p>
+            <p>
+                <strong class="text-black">Tempo de Processamento:</strong>
+                {{ upload.processing_time }}
+            </p>
+            <p>
+                <strong class="text-black">Registros Inseridos:</strong>
+                {{ upload.records_inserted }}
+            </p>
+            <p>
+                <strong class="text-black">Registros com Falha:</strong>
+                {{ upload.records_failed }}
+            </p>
         </div>
+        <a href="{%url 'upload'%}" class="block mt-[16px] text-center bg-green-600 px-[22px] py-[11px] text-[18px] text-white rounded-[18px] w-[208px]">
+            Ver mais
+        </a>
     </div>
 {% endblock %}
     

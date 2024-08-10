@@ -22,10 +22,10 @@
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-[100vh]">
     {% include 'layout/header.html' %}
 
-    <main class="w-full max-w-[1920px] m-auto">
+    <main class="w-full max-w-[1920px] m-auto px-[60px] flex-1">
         {% block content %}
         <!-- Conteúdo específico da página será inserido aqui -->
         {% endblock %}
