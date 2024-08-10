@@ -3,7 +3,46 @@
 {% block title %}Enviar arquivos{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg max-w-lg">
+    <h2 class="text-[22px] mt-[30px] mb-[16px] font-medium">Enviar arquivo csv:</h2>
+    <p class="text-[16px] text-stone-400">Observe os arquivos antes do envio, cada arquivo corresponde a sua respectiva tabela no banco de dados.</p>
+    <p class="text-[16px] text-stone-400">Arquivos aceitos: movies.csv, ratings.csv, tags.csv, links.csv, genome-scores.csv e genome-tags.csv</p>
+
+    <form method="post" enctype="multipart/form-data" class="flex items-center gap-[16px] mt-[16px]">
+        {% csrf_token %}
+        <input type="file" name="file" class="hidden" id="file-upload" onchange="document.getElementById('file-name').textContent = this.files[0].name">
+        <label for="file-upload" class="bg-stone-400 px-[22px] py-[11px] text-[18px] text-white rounded-[18px] min-w-[208px] text-center cursor-pointer">
+            Selecionar arquivo
+        </label>
+        <span id="file-name" class="text-[18px] text-stone-400"></span>
+        <button type="submit" class="bg-green-600 px-[22px] py-[11px] text-[18px] text-white rounded-[18px] min-w-[208px]">
+            Enviar
+        </button>
+    </form>
+    
+
+    <h2 class="text-[22px] mt-[30px] mb-[16px] font-medium">Histórico de envios:</h2>
+
+    <div class="mt-[16px] flex flex-col gap-[10px]">
+        {%for upload in uploads%}
+            <div class="border border-stone-400/50 rounded-lg h-[102px] flex justify-between items-center px-[18px]">
+                <div>
+                    <p class="text-stone-400 text-[18px]"><strong class="text-black">Arquivo: </strong>{{upload.file_name}}</p>
+                    <p class="text-stone-400 text-[18px]"><strong class="text-black">Data: </strong>{{upload.upload_date}}</p>
+                </div>
+                <a href="{%url 'upload'%}{{upload.id}}" class="text-center bg-green-600 px-[22px] py-[11px] text-[18px] text-white rounded-[18px] min-w-[208px]">
+                    Ver mais
+                </a>
+            </div>
+        {%endfor%}
+    </div>
+
+    <script>
+        document.getElementById('file-upload').addEventListener('change', function() {
+            document.getElementById('file-name').textContent = this.files[0].name;
+        });
+    </script>
+
+    {% comment %} <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg max-w-lg">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Enviar Arquivo</h1>
         <form method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
@@ -14,5 +53,5 @@
                 Upload
             </button>
         </form>
-    </div>
+    </div> {% endcomment %}
 {% endblock %}

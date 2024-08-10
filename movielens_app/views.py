@@ -11,6 +11,11 @@ class UploadView(FormView):
     template_name = 'upload.html'
     form_class = UploadForm
     success_url = reverse_lazy('upload') 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['uploads'] = FileUpload.objects.all()
+        return context
 
     def form_valid(self, form):
         try:
