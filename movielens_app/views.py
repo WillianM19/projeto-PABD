@@ -14,7 +14,7 @@ class UploadView(FormView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['uploads'] = FileUpload.objects.all()
+        context['uploads'] = FileUpload.objects.all().order_by('-upload_date')
         return context
 
     def form_valid(self, form):
