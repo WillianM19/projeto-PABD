@@ -53,11 +53,13 @@ class GenomeTag(models.Model):
 class FileUpload(models.Model):
     file_name = models.CharField(max_length=255)
     upload_date = models.DateTimeField(default=timezone.now)
-    processing_time = models.DurationField()
-    records_inserted = models.IntegerField()
-    records_failed = models.IntegerField()
+    processing_time = models.DurationField(null=True, blank=True)
+    records_inserted = models.IntegerField(default=0)
+    records_failed = models.IntegerField(default=0)
+    task_id = models.CharField(max_length=255, null=True, blank=True)  # Novo campo
 
     def __str__(self):
         return self.file_name
+
     
 

@@ -1,9 +1,10 @@
-import pandas as pd
-import time
-from datetime import timedelta
+# forms.py
+
 from django import forms
-from django.db import transaction
-from .models import FileUpload, Movie, Rating, Tag, Link, GenomeScore, GenomeTag
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from movielens_app.models import FileUpload
+from .tasks import process_csv_file
 
 class UploadForm(forms.Form):
     file = forms.FileField()
@@ -13,88 +14,10 @@ class UploadForm(forms.Form):
         if not file.name.endswith('.csv'):
             raise forms.ValidationError("O arquivo deve ser um CSV")
 
-        start_time = time.time()
-        data = pd.read_csv(file)
         file_name = file.name
-        records_inserted = 0
-        records_failed = 0
+        file_path = default_storage.save(file.name, ContentFile(file.read()))  # Salva o arquivo e lê seu conteúdo
 
-        try:
-            if file_name == 'movies.csv':
-                records_inserted, records_failed = self._process_csv_bulk(data, Movie, ['movieId', 'title', 'genres'])
-            elif file_name == 'ratings.csv':
-                records_inserted, records_failed = self._process_csv_bulk(data, Rating, ['userId', 'movieId', 'rating', 'timestamp'])
-            elif file_name == 'tags.csv':
-                records_inserted, records_failed = self._process_csv_bulk(data, Tag, ['userId', 'movieId', 'tag', 'timestamp'])
-            elif file_name == 'links.csv':
-                records_inserted, records_failed = self._process_links_csv_bulk(data)
-            elif file_name == 'genome-scores.csv':
-                records_inserted, records_failed = self._process_csv_bulk(data, GenomeScore, ['movieId', 'tagId', 'relevance'])
-            elif file_name == 'genome-tags.csv':
-                records_inserted, records_failed = self._process_csv_bulk(data, GenomeTag, ['tagId', 'tag'])
-            else:
-                raise forms.ValidationError("Formato de arquivo não suportado")
-        except Exception as e:
-            records_failed += 1
+        return file_path, file_name
 
-        end_time = time.time()
-        processing_time_seconds = end_time - start_time
-        processing_time = timedelta(seconds=processing_time_seconds)
 
-        file_upload = FileUpload.objects.create(
-            file_name=file_name,
-            processing_time=processing_time,
-            records_inserted=records_inserted,
-            records_failed=records_failed
-        )
-        
-        return file_upload
 
-    @transaction.atomic
-    def _process_csv_bulk(self, data, model, columns):
-        records_inserted = 0
-        records_failed = 0
-        bulk_create_list = []
-
-        for _, row in data.iterrows():
-            try:
-                data_dict = {col: row[col] for col in columns}
-                if 'movieId' in data_dict:
-                    data_dict['movieId'] = int(data_dict['movieId'])
-                if 'tagId' in data_dict:
-                    data_dict['tagId'] = int(data_dict['tagId'])
-                bulk_create_list.append(model(**data_dict))
-                records_inserted += 1
-            except Exception as e:
-                records_failed += 1
-
-        if bulk_create_list:
-            model.objects.bulk_create(bulk_create_list, batch_size=1000)
-            
-        print(records_inserted)
-        
-        return records_inserted, records_failed
-
-    @transaction.atomic
-    def _process_links_csv_bulk(self, data):
-        records_inserted = 0
-        records_failed = 0
-        bulk_create_list = []
-
-        for _, row in data.iterrows():
-            try:
-                movie_id = int(row['movieId'])
-                movie_instance = Movie.objects.get(movieId=movie_id)
-                bulk_create_list.append(Link(
-                    movieId=movie_instance,
-                    imdbId=row['imdbId'],
-                    tmdbId=row['tmdbId']
-                ))
-                records_inserted += 1
-            except Exception as e:
-                records_failed += 1
-
-        if bulk_create_list:
-            Link.objects.bulk_create(bulk_create_list, batch_size=1000)
-        
-        return records_inserted, records_failed

@@ -4,6 +4,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 
+from movielens_app.tasks import process_csv_file
+
 from .forms import UploadForm
 from movielens_app.models import FileUpload
 
@@ -18,12 +20,13 @@ class UploadView(FormView):
         return context
 
     def form_valid(self, form):
-        try:
-            file_uploaded = form.process_file() 
-            return redirect(f'/upload/{file_uploaded.id}/')
-        except forms.ValidationError as e:
-            form.add_error(None, e)  
-            return self.form_invalid(form)
+        file_path, file_name = form.process_file()  # Obtém o caminho do arquivo e o nome
+
+        # Envia a tarefa para o Celery
+        process_csv_file.delay(file_path, file_name)
+
+        # Redireciona para a página de upload
+        return redirect(self.success_url)
 
 class FileUploadDetailView(DetailView):
     model = FileUpload
