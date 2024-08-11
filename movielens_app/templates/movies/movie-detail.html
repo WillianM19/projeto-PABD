@@ -1,32 +1,69 @@
 {% extends 'layout/base.html' %}
 
-{% block title %}Enviar arquivos{% endblock %}
+{% block title %} {{ tmdb_data.title }} - Filme{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-semibold text-green-600 mb-4">Detalhes do Filme</h1>
-        <div class="space-y-4">
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Nome do Filme:</span>
-                <span class="text-gray-900">{{ movie.file_name }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Data de movie:</span>
-                <span class="text-gray-900">{{ movie.movie_date }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Tempo de Processamento:</span>
-                <span class="text-gray-900">{{ movie.processing_time }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Registros Inseridos:</span>
-                <span class="text-gray-900">{{ movie.records_inserted }}</span>
-            </div>
-            <div class="flex items-center">
-                <span class="font-medium text-gray-700 w-48">Registros com Falha:</span>
-                <span class="text-gray-900">{{ movie.records_failed }}</span>
+    <div class="mt-[30px] border border-stone-400/50 rounded-lg p-[16px]">        
+        <!-- Card -->
+        <div class="flex gap-[24px]">
+            <img 
+                src="https://image.tmdb.org/t/p/w500{{ tmdb_data.poster_path }}" 
+                alt="{{ tmdb_data.title }}" 
+                class="object-cover rounded-lg" width="225px" height="335px">
+            <div class="py-[24px] flex flex-col text-black-400 text-[18px] ">
+                <p>
+                    <strong class="text-black">Título Original:</strong>
+                    {{ tmdb_data.original_title }}
+                </p>
+                <p>
+                    <strong class="text-black">Data de Lançamento:</strong>
+                    {{ tmdb_data.release_date }}
+                </p>
+                <p>
+                    <strong class="text-black">Gêneros:</strong>
+                    {% for genre in tmdb_data.genres %}
+                        {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p>
+                    <strong class="text-black">Tagline:</strong>
+                    {{ tmdb_data.tagline }}
+                </p>
+                <p>
+                    <strong class="text-black">Duração:</strong>
+                    {{ tmdb_data.runtime }} minutos
+                </p>
+                <p>
+                    <strong class="text-black">Média de Avaliações:</strong>
+                    {{ tmdb_data.vote_average }}
+                </p>
+                <p>
+                    <strong class="text-black">Número de Avaliações:</strong>
+                    {{ tmdb_data.vote_count }}
+                </p>
+                <p>
+                    <strong class="text-black">Popularidade:</strong>
+                    {{ tmdb_data.popularity }}
+                </p>
+                <p>
+                    <strong class="text-black">Status:</strong>
+                    {{ tmdb_data.status }}
+                </p>
+                <p>
+                    <strong class="text-black">Homepage:</strong>
+                    {% if tmdb_data.homepage %}
+                    <a href="{{ tmdb_data.homepage }}" class="text-blue-600">{{ tmdb_data.homepage }}</a>
+                    {% else %}
+                        Não disponível
+                    {% endif %}
+                </p>
+                <p>
+                    <strong class="text-black">Sinopse:</strong>
+                    {{ tmdb_data.overview }}
+                </p>
             </div>
         </div>
+
+
     </div>
 {% endblock %}
-    
