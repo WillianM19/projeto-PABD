@@ -56,7 +56,7 @@ class FileUpload(models.Model):
     processing_time = models.DurationField(null=True, blank=True)
     records_inserted = models.IntegerField(default=0)
     records_failed = models.IntegerField(default=0)
-    task_id = models.CharField(max_length=255, null=True, blank=True)  # Novo campo
+    task_id = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.file_name

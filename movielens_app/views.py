@@ -20,12 +20,10 @@ class UploadView(FormView):
         return context
 
     def form_valid(self, form):
-        file_path, file_name = form.process_file()  # Obtém o caminho do arquivo e o nome
+        file_path, file_name = form.process_file() 
 
-        # Envia a tarefa para o Celery
         process_csv_file.delay(file_path, file_name)
 
-        # Redireciona para a página de upload
         return redirect(self.success_url)
 
 class FileUploadDetailView(DetailView):

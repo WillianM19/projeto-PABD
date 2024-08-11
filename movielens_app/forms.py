@@ -15,8 +15,7 @@ class UploadForm(forms.Form):
             raise forms.ValidationError("O arquivo deve ser um CSV")
 
         file_name = file.name
-        file_path = default_storage.save(file.name, ContentFile(file.read()))  # Salva o arquivo e lê seu conteúdo
-
+        file_path = default_storage.save(file.name, ContentFile(file.read())) 
         return file_path, file_name
 
 

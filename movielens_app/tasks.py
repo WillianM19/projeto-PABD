@@ -2,7 +2,8 @@ from celery import shared_task
 import pandas as pd
 from .models import FileUpload, Movie, Rating, Tag, Link, GenomeScore, GenomeTag
 import time
-from datetime import timedelta, timezone
+from datetime import timedelta
+from django.utils import timezone
 from django.core.files.storage import default_storage
 import logging
 logger = logging.getLogger(__name__)
@@ -16,11 +17,9 @@ def process_csv_file(file_path, file_name):
     records_failed = 0
 
     try:
-        # Leia o arquivo usando o sistema de armazenamento Django
         with default_storage.open(file_path) as file:
             data = pd.read_csv(file)
 
-        # Processamento do arquivo CSV
         if file_name == 'movies.csv':
             records_inserted, records_failed = _process_csv_bulk(data, Movie, ['movieId', 'title', 'genres'])
         elif file_name == 'ratings.csv':
@@ -44,10 +43,9 @@ def process_csv_file(file_path, file_name):
     processing_time_seconds = end_time - start_time
     processing_time = timedelta(seconds=processing_time_seconds)
 
-    # Cria o objeto FileUpload após o processamento
     file_upload = FileUpload.objects.create(
         file_name=file_name,
-        upload_date=timezone.now(),  # Define a data de upload
+        upload_date=timezone.now(),
         processing_time=processing_time,
         records_inserted=records_inserted,
         records_failed=records_failed
