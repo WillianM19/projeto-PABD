@@ -13,7 +13,7 @@ from .forms import UploadForm, MovieFilterForm
 from movielens_app.models import FileUpload
 
 class UploadView(FormView):
-    template_name = 'uploads/upload.html'
+    template_name = 'upload.html'
     form_class = UploadForm
     success_url = reverse_lazy('upload') 
     
@@ -31,7 +31,7 @@ class UploadView(FormView):
 
 class FileUploadDetailView(DetailView):
     model = FileUpload
-    template_name = 'uploads/upload_detail.html'
+    template_name = 'upload_detail.html'
     context_object_name = 'upload'
 
 class HomeView(ListView):
