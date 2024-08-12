@@ -1,5 +1,3 @@
-# forms.py
-
 from django import forms
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -19,6 +17,13 @@ class UploadForm(forms.Form):
         return file_path, file_name
 
 class MovieFilterForm(forms.Form):
+    title = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Título do filme',
+            'class': 'form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
+        })
+    )
     genres = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={
@@ -62,4 +67,3 @@ class MovieFilterForm(forms.Form):
             'class': 'form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
         })
     )
-

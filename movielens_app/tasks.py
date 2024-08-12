@@ -66,6 +66,16 @@ def _process_csv_bulk(data, model, columns):
                 data_dict['movieId'] = int(data_dict['movieId'])
             if 'tagId' in data_dict:
                 data_dict['tagId'] = int(data_dict['tagId'])
+            if 'tag' in data_dict:
+                data_dict['tag'] = str(data_dict['tag'])
+            if 'userId' in data_dict:
+                data_dict['userId'] = int(data_dict['userId'])
+            if 'rating' in data_dict:
+                data_dict['rating'] = float(data_dict['rating'])
+            if 'relevance' in data_dict:
+                data_dict['relevance'] = float(data_dict['relevance'])
+            if 'timestamp' in data_dict:
+                data_dict['timestamp'] = int(data_dict['timestamp'])
             bulk_create_list.append(model(**data_dict))
             records_inserted += 1
         except Exception as e:
@@ -73,7 +83,7 @@ def _process_csv_bulk(data, model, columns):
             print(f"Erro ao processar linha: {e}")
 
     if bulk_create_list:
-        model.objects.bulk_create(bulk_create_list, batch_size=1000)
+            model.objects.bulk_create(bulk_create_list, batch_size=1000)
     
     return records_inserted, records_failed
 
@@ -97,6 +107,6 @@ def _process_links_csv_bulk(data):
             print(f"Erro ao processar linha: {e}")
 
     if bulk_create_list:
-        Link.objects.bulk_create(bulk_create_list, batch_size=1000)
+            Link.objects.bulk_create(bulk_create_list, batch_size=1000)
     
     return records_inserted, records_failed

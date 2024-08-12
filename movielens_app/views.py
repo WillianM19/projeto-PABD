@@ -62,6 +62,7 @@ class MovieSearchView(ListView):
         queryset = Movie.objects.all()
 
         if form.is_valid():
+            title = form.cleaned_data.get('title')
             genres = form.cleaned_data.get('genres')
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
@@ -69,9 +70,11 @@ class MovieSearchView(ListView):
             min_votes = form.cleaned_data.get('min_votes')
             user_id = form.cleaned_data.get('user_id')
 
+            if title:
+                queryset = queryset.filter(title__icontains=title)
+
             if genres:
                 genres_list = [genre.strip() for genre in genres.split(',')]
-                # Cria uma expressão de busca que verifica se qualquer gênero está presente
                 genre_query = '|'.join(genres_list)
                 queryset = queryset.filter(genres__icontains=genre_query)
 
@@ -102,27 +105,13 @@ class MovieSearchView(ListView):
 
 class MovieDetailView(DetailView):
     model = Movie
-    template_name = 'movies/movie-detail.html'
+    template_name = 'movies/movie_detail.html'
     context_object_name = 'movie'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         movie = context['movie']
         
-        print(movie)
-        print(dir(movie.link.imdbId))
-        print(movie.link.imdbId.replace('.0', ''))
-        print(type(movie.link.imdbId))
-        print(int(movie.link.imdbId.replace('.0', '')))
-
-        # Fetch details from OMDb API
-        omdb_api_key = '3e3f6376'
-        movie_imdb = movie.link.imdbId
-        omdb_url = f'http://www.omdbapi.com/?i={movie_imdb}&apikey={omdb_api_key}'
-        omdb_response = requests.get(omdb_url)
-        context['omdb_data'] = omdb_response.json()
-
-        # Fetch details from TMDb API
         tmdb_api_key = '2fc487799292af1ddbd79c47ba143ed4'
         tmdb_url = f'https://api.themoviedb.org/3/movie/{movie.link.tmdbId}?api_key={tmdb_api_key}'
         tmdb_response = requests.get(tmdb_url)

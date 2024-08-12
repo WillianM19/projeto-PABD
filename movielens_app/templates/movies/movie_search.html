@@ -5,10 +5,47 @@
 
 {% block content %}
 
-    <form method="get" action="{% url 'movie-search' %}" class="mb-4">
+    <form method="get" action="{% url 'movie-search' %}" class="mb-4 grid grid-cols-8 gap-4">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Buscar</button>
+        
+        <div class="col-span-full">
+            <label for="title" class="block text-gray-700">Título</label>
+            {{ form.title }}
+        </div>
+
+        <div class="col-span-4">
+            <label for="genres" class="block text-gray-700">Gêneros</label>
+            {{ form.genres }}
+        </div>
+
+        <div class="col-span-2">
+            <label for="start_date" class="block text-gray-700">Data de Início</label>
+            {{ form.start_date }}
+        </div>
+
+        <div class="col-span-2">
+            <label for="end_date" class="block text-gray-700">Data de Fim</label>
+            {{ form.end_date }}
+        </div>
+
+        <div class="col-span-2">
+            <label for="min_rating" class="block text-gray-700">Avaliação Mínima</label>
+            {{ form.min_rating }}
+        </div>
+
+        <div class="col-span-2">
+            <label for="min_votes" class="block text-gray-700">Votos Mínimos</label>
+            {{ form.min_votes }}
+        </div>
+
+        <div class="col-span-2">
+            <label for="user_id" class="block text-gray-700">ID do Usuário</label>
+            {{ form.user_id }}
+        </div>
+
+    <div class="col-span-2 self-end">
+            <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg">Buscar</button>
+        </div>
     </form>
     
     {% if movies %}
