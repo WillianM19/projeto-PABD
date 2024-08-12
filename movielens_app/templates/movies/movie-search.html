@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Buscar{% endblock %}
+
+{% block content %}
+
+    <form method="get" action="{% url 'movie-search' %}" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Buscar</button>
+    </form>
+    
+    {% if movies %}
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">Título</th>
+                    <th class="py-2 px-4 border-b">Gênero</th>
+                    <th class="py-2 px-4 border-b">Ano de Lançamento</th>
+                    <th class="py-2 px-4 border-b">Média de Avaliações</th>
+                    <th class="py-2 px-4 border-b">Número de Avaliações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for movie in movies %}
+                    <tr>
+                        <td class="py-2 px-4 border-b"><a href="{% url 'movie-detail' movie.movieId %}" class="text-blue-600 hover:underline">{{ movie.title }}</a></td>
+                        <td class="py-2 px-4 border-b">{{ movie.genres }}</td>
+                        <td class="py-2 px-4 border-b">{{ movie.release_date }}</td>
+                        <td class="py-2 px-4 border-b">{{ movie.average_rating }}</td>
+                        <td class="py-2 px-4 border-b">{{ movie.vote_count }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="py-2 px-4 border-b text-center">Nenhum filme encontrado.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-4">
+            {% if page_obj.has_previous %}
+                <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page=1" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Primeira</a>
+                <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Anterior</a>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+                <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Próxima</a>
+                <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Última</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="text-center">Nenhum filme encontrado.</p>
+    {% endif %}
+
+{% endblock %}

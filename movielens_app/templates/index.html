@@ -1,0 +1,60 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Filmes{% endblock %}
+
+{% block content %}
+
+        <form method="get" action="{% url 'movie-search' %}" class="mb-4">
+            {% csrf_token %}
+            {{ search_form.as_p }}
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Buscar</button>
+        </form>
+
+        {% for movie in page_obj %}
+            <div class="flex gap-x-4 h-[192px] border border-stone-400 rounded-lg overflow-hidden bg-white">
+                <a href="{% url 'movie-detail' movie.movieId %}" class="flex">
+                    <img src="{{ movie_data.poster }}" alt="Imagem do filme" class="h-[192px]"
+                    alt="Imagem do filme" class=" h-[192px]">
+                    <div class="py-2 flex flex-col gap-4 content-center ">
+                        <h2 class="font-bold text-lg">{{movie.title}}</h2>
+                        <p class="text-black-400 text-sm">Gênero: {{ movie.genres }} </p>
+                        <p class="text-black-400 text-sm">Avaliação:</p>
+                        <p class="text-stone-400 text-sm">
+                            {% for rating_movie in movie_ratings %}
+                                {{ movie_rating.average_rating }}
+                            {% endfor %}
+                        </p>
+                        <p class="text-black-400 text-sm">Data: {{ movie.timestamp }}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="flex flex-col gap-y-5 w-full">
+        <div class="flex flex-col gap-y-5 w-full">
+            <div class="flex justify-between items-center mt-4">
+                <div class="pagination">
+                    <span class="step-links flex items-center space-x-2">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1" class="px-3 py-2 text-sm text-green-600 bg-white border border-green-300 rounded-lg hover:bg-green-100 hover:text-green-800">&laquo; Primeiro</a>
+                            <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 text-sm text-green-600 bg-white border border-green-300 rounded-lg hover:bg-green-100 hover:text-green-800">Anterior</a>
+                        {% endif %}
+    
+                        <span class="current px-3 py-2 text-sm text-green-600 bg-white border border-green-300 rounded-lg">
+                            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+    
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 text-sm text-green-600 bg-white border border-green-300 rounded-lg hover:bg-green-100 hover:text-green-800">Próximo</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 text-sm text-green-600 bg-white border border-green-300 rounded-lg hover:bg-green-100 hover:text-green-800">Último &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+{% endblock %}
