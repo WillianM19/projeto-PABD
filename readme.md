@@ -42,6 +42,7 @@ Este projeto tem como objetivo migrar os dados do conjunto MovieLens 20M, atrav�
 
 O diagrama lógico da persistência dos dados mostra as relações entre as tabelas do banco de dados para armazenar as informações do dataset MovieLens 20M. As principais tabelas e suas relações incluem:
 
+![diagrama-logico](https://github.com/user-attachments/assets/ee41142f-fb86-4de8-a583-c0cf9bb8db30)
 
 ## Passos para a Execução
 
